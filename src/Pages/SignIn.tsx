@@ -9,6 +9,13 @@ export default function SignIn() {
   const [btnDisable, setBtnDisable] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("TOKEN");
+    if (token) {
+      navigate("/todo");
+    }
+  });
+
+  useEffect(() => {
     if (email.includes("@") && password.length >= 8) {
       setBtnDisable(false);
     } else {
