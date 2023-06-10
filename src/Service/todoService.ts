@@ -60,3 +60,16 @@ export const fetchUpdateToDoApi = async (
     console.log(error);
   }
 };
+
+// deleteTodo
+export const fetchDeleteToDoApi = async (token: string, id: number) => {
+  try {
+    await axios.delete(`${ApiURL}/todos/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

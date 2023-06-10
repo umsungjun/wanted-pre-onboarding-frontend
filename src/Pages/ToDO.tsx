@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchCreateToDoApi,
+  fetchDeleteToDoApi,
   fetchGetToDoApi,
   fetchUpdateToDoApi,
 } from "../Service/todoService";
@@ -80,6 +81,14 @@ export default function ToDO() {
     setTodoList(updateTodoList);
   };
 
+  const handleDelete = async (todoId: number) => {
+    if (!token) return;
+    await fetchDeleteToDoApi(token, todoId);
+
+    const updateTodoList = todoList.filter((todo) => todo.id !== todoId);
+    setTodoList(updateTodoList);
+  };
+
   return (
     <>
       <input
@@ -139,7 +148,12 @@ export default function ToDO() {
                 >
                   수정
                 </button>
-                <button data-testid="delete-button">삭제</button>
+                <button
+                  data-testid="delete-button"
+                  onClick={() => handleDelete(todo.id)}
+                >
+                  삭제
+                </button>
               </>
             )}
           </li>
