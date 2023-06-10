@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchCreateToDoApi,
@@ -11,7 +11,9 @@ export default function ToDO() {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
   const [todoList, setTodoList] = useState<ToDoListType[]>([]);
-  const [todo, setTodo] = useState("");
+  const [todoInput, setTodoInput] = useState("");
+  const [editTodoId, setEditTodoId] = useState(99999);
+  const [todoEditInput, setTodoEditInput] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("TOKEN");
@@ -26,15 +28,16 @@ export default function ToDO() {
 
     (async () => {
       const responseTodoList = (await fetchGetToDoApi(token)) || [];
+
       setTodoList(responseTodoList);
     })();
   }, []);
 
   const handleCreateTodo = async () => {
-    if (!token || !todo) return;
+    if (!token || !todoInput) return;
     try {
-      const responseTodo = await fetchCreateToDoApi(token, todo);
-      setTodo("");
+      const responseTodo = await fetchCreateToDoApi(token, todoInput);
+      setTodoInput("");
       setTodoList((prevTodoList) => [...prevTodoList, responseTodo]);
     } catch (error) {
       console.log(error);
@@ -67,13 +70,23 @@ export default function ToDO() {
     setTodoList(updateTodoList);
   };
 
+  const handleEditStart = (todoId: number) => {
+    setEditTodoId(todoId);
+    const curEditTodo = todoList.find((todo) => todo.id === todoId);
+    setTodoEditInput(curEditTodo?.todo || "");
+  };
+
+  const handleEditFinish = () => {
+    setEditTodoId(9999);
+  };
+
   return (
     <>
       <input
-        className="border-black border-2 "
+        className="border-black border-2"
         data-testid="new-todo-input"
-        onChange={(e) => setTodo(e.target.value)}
-        value={todo}
+        onChange={(e) => setTodoInput(e.target.value)}
+        value={todoInput}
       />
       <button
         data-testid="new-todo-add-button"
@@ -84,18 +97,43 @@ export default function ToDO() {
       {todoList &&
         todoList.map((todo) => (
           <li key={todo.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={todo.isCompleted}
-                onChange={() =>
-                  handleUpdateTodo(todo.id, !todo.isCompleted, todo.todo)
-                }
-              />
-              <span>{todo.todo}</span>
-            </label>
-            <button data-testid="modify-button">수정</button>
-            <button data-testid="delete-button">삭제</button>
+            {editTodoId === todo.id ? (
+              <>
+                <input
+                  className="border-black border-2"
+                  data-testid="modify-input"
+                  value={todoEditInput}
+                  onChange={(e) => setTodoEditInput(e.target.value)}
+                />
+                <button data-testid="submit-button">제출</button>
+                <button
+                  data-testid="cancel-button"
+                  onClick={() => handleEditFinish()}
+                >
+                  취소
+                </button>
+              </>
+            ) : (
+              <>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={todo.isCompleted}
+                    onChange={() =>
+                      handleUpdateTodo(todo.id, !todo.isCompleted, todo.todo)
+                    }
+                  />
+                  <span>{todo.todo}</span>
+                </label>
+                <button
+                  data-testid="modify-button"
+                  onClick={() => handleEditStart(todo.id)}
+                >
+                  수정
+                </button>
+                <button data-testid="delete-button">삭제</button>
+              </>
+            )}
           </li>
         ))}
     </>
