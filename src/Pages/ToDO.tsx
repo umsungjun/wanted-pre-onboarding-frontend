@@ -44,6 +44,16 @@ export default function ToDO() {
     }
   };
 
+  const handleEditStart = (todoId: number) => {
+    setEditTodoId(todoId);
+    const curEditTodo = todoList.find((todo) => todo.id === todoId);
+    setTodoEditInput(curEditTodo?.todo || "");
+  };
+
+  const handleEditFinish = () => {
+    setEditTodoId(9999);
+  };
+
   const handleUpdateTodo = async (
     id: number,
     checked: boolean,
@@ -68,16 +78,6 @@ export default function ToDO() {
       return todo;
     });
     setTodoList(updateTodoList);
-  };
-
-  const handleEditStart = (todoId: number) => {
-    setEditTodoId(todoId);
-    const curEditTodo = todoList.find((todo) => todo.id === todoId);
-    setTodoEditInput(curEditTodo?.todo || "");
-  };
-
-  const handleEditFinish = () => {
-    setEditTodoId(9999);
   };
 
   return (
@@ -105,7 +105,15 @@ export default function ToDO() {
                   value={todoEditInput}
                   onChange={(e) => setTodoEditInput(e.target.value)}
                 />
-                <button data-testid="submit-button">제출</button>
+                <button
+                  data-testid="submit-button"
+                  onClick={() => {
+                    handleUpdateTodo(todo.id, todo.isCompleted, todoEditInput);
+                    handleEditFinish();
+                  }}
+                >
+                  제출
+                </button>
                 <button
                   data-testid="cancel-button"
                   onClick={() => handleEditFinish()}
