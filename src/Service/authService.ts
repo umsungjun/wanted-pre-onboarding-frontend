@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LoginResultType } from "../Type/type";
 
 const postJoinURL = `https://www.pre-onboarding-selection-task.shop/auth/signup`;
 const postLoginURL = `https://www.pre-onboarding-selection-task.shop/auth/signin`;
@@ -21,13 +22,6 @@ export const fetchJoinApi = async (email: string, passWord: string) => {
   }
 };
 
-interface loginResultType {
-  data: {
-    access_token: string;
-  };
-  status: number;
-}
-
 // 로그인
 export const fetchLoginApi = async (email: string, passWord: string) => {
   const data = {
@@ -35,7 +29,7 @@ export const fetchLoginApi = async (email: string, passWord: string) => {
     password: passWord,
   };
   try {
-    const result: loginResultType = await axios.post(postLoginURL, data, {
+    const result: LoginResultType = await axios.post(postLoginURL, data, {
       headers: {
         "Content-Type": "application/json",
       },
