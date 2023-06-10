@@ -90,74 +90,92 @@ export default function ToDO() {
   };
 
   return (
-    <>
-      <input
-        className="border-black border-2"
-        data-testid="new-todo-input"
-        onChange={(e) => setTodoInput(e.target.value)}
-        value={todoInput}
-      />
-      <button
-        data-testid="new-todo-add-button"
-        onClick={() => handleCreateTodo()}
-      >
-        추가
-      </button>
+    <section className="h-96 w-full flex flex-col items-center justify-start bg-sky-100 p-7 rounded-xl">
+      <h1 className="w-full text-grey-darkest text-left text-2xl">Todo List</h1>
+      <div className="flex mt-4">
+        <input
+          className="w-96 shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
+          placeholder="Add Todo"
+          data-testid="new-todo-input"
+          onChange={(e) => setTodoInput(e.target.value)}
+          value={todoInput}
+        />
+        <button
+          className="flex-no-shrink p-2 border-2 rounded text-teal border-teal hover:text-white hover:bg-teal-300"
+          data-testid="new-todo-add-button"
+          onClick={() => handleCreateTodo()}
+        >
+          추가
+        </button>
+      </div>
       {todoList &&
         todoList.map((todo) => (
-          <li key={todo.id}>
+          <li key={todo.id} className="w-full mt-3 flex items-center">
             {editTodoId === todo.id ? (
               <>
                 <input
-                  className="border-black border-2"
+                  className="flex-1 shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
                   data-testid="modify-input"
                   value={todoEditInput}
                   onChange={(e) => setTodoEditInput(e.target.value)}
                 />
-                <button
-                  data-testid="submit-button"
-                  onClick={() => {
-                    handleUpdateTodo(todo.id, todo.isCompleted, todoEditInput);
-                    handleEditFinish();
-                  }}
-                >
-                  제출
-                </button>
-                <button
-                  data-testid="cancel-button"
-                  onClick={() => handleEditFinish()}
-                >
-                  취소
-                </button>
+                <div className="ml-auto">
+                  <button
+                    className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green border-green hover:bg-green-400"
+                    data-testid="submit-button"
+                    onClick={() => {
+                      handleUpdateTodo(
+                        todo.id,
+                        todo.isCompleted,
+                        todoEditInput
+                      );
+                      handleEditFinish();
+                    }}
+                  >
+                    제출
+                  </button>
+                  <button
+                    className="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-400"
+                    data-testid="cancel-button"
+                    onClick={() => handleEditFinish()}
+                  >
+                    취소
+                  </button>
+                </div>
               </>
             ) : (
               <>
-                <label>
+                <label className="flex items-center">
                   <input
                     type="checkbox"
+                    className="w-5 h-5 mr-2"
                     checked={todo.isCompleted}
                     onChange={() =>
                       handleUpdateTodo(todo.id, !todo.isCompleted, todo.todo)
                     }
                   />
-                  <span>{todo.todo}</span>
+                  <span className="text-2xl">{todo.todo}</span>
                 </label>
-                <button
-                  data-testid="modify-button"
-                  onClick={() => handleEditStart(todo.id)}
-                >
-                  수정
-                </button>
-                <button
-                  data-testid="delete-button"
-                  onClick={() => handleDelete(todo.id)}
-                >
-                  삭제
-                </button>
+                <div className="ml-auto">
+                  <button
+                    className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green border-green hover:bg-green-400"
+                    data-testid="modify-button"
+                    onClick={() => handleEditStart(todo.id)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-400"
+                    data-testid="delete-button"
+                    onClick={() => handleDelete(todo.id)}
+                  >
+                    삭제
+                  </button>
+                </div>
               </>
             )}
           </li>
         ))}
-    </>
+    </section>
   );
 }
