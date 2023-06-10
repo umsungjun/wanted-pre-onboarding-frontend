@@ -9,12 +9,13 @@ export const fetchCreateToDoApi = async (token: string, todo: string) => {
     todo: todo,
   };
   try {
-    await axios.post(`${ApiURL}/todos`, data, {
+    const result = await axios.post(`${ApiURL}/todos`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
+    return result.data;
   } catch (error) {
     console.log(error);
   }
@@ -26,6 +27,31 @@ export const fetchGetToDoApi = async (token: string) => {
     const result: ToDoListResultType = await axios.get(`${ApiURL}/todos`, {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return result.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// updateTodo
+export const fetchUpdateToDoApi = async (
+  token: string,
+  id: number,
+  checked: boolean,
+  changeTodo: string
+) => {
+  const data = {
+    todo: changeTodo,
+    isCompleted: checked,
+  };
+  try {
+    const result = await axios.put(`${ApiURL}/todos/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
 

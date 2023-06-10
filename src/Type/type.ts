@@ -14,6 +14,7 @@ export interface ToDoListResultType {
     todo: string;
   }[];
 }
+
 // ToDoList 타입
 export interface ToDoListType {
   id: number;
