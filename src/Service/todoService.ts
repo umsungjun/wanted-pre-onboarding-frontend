@@ -1,23 +1,35 @@
 import axios from "axios";
+import { ToDoListResultType } from "../Type/type";
 
 const ApiURL = `https://www.pre-onboarding-selection-task.shop`;
 
 // createTodo
 export const fetchCreateToDoApi = async (token: string, todo: string) => {
-  console.log(token, todo);
   const data = {
     todo: todo,
   };
   try {
-    const result = await axios.post(`${ApiURL}/todos`, data, {
+    await axios.post(`${ApiURL}/todos`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
-    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-    return result;
+// getToDo
+export const fetchGetToDoApi = async (token: string) => {
+  try {
+    const result: ToDoListResultType = await axios.get(`${ApiURL}/todos`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return result.data;
   } catch (error) {
     console.log(error);
   }

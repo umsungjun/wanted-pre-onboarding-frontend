@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchCreateToDoApi } from "../Service/todoService";
+import { fetchCreateToDoApi, fetchGetToDoApi } from "../Service/todoService";
+import { ToDoListType } from "../Type/type";
 
 export default function ToDO() {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
+  const [todoList, setTodoList] = useState<ToDoListType[]>([]);
   const [todo, setTodo] = useState("");
+
   useEffect(() => {
     const token = localStorage.getItem("TOKEN");
     if (!token) {
@@ -13,12 +16,19 @@ export default function ToDO() {
     }
   });
 
-  const handleCreateTodo = async () => {
-    console.log("click");
+  useEffect(() => {
+    const token = localStorage.getItem("TOKEN");
+    if (!token) return;
 
+    (async () => {
+      const responseTodoList = (await fetchGetToDoApi(token)) || [];
+      setTodoList(responseTodoList);
+    })();
+  }, [todoList]);
+
+  const handleCreateTodo = async () => {
     if (!token || !todo) return;
-    const result = await fetchCreateToDoApi(token, todo);
-    console.log(result);
+    await fetchCreateToDoApi(token, todo);
   };
 
   return (
@@ -34,14 +44,17 @@ export default function ToDO() {
       >
         추가
       </button>
-      <li>
-        <label>
-          <input type="checkbox" />
-          <span>TODO 1</span>
-        </label>
-        <button data-testid="modify-button">수정</button>
-        <button data-testid="delete-button">삭제</button>
-      </li>
+      {todoList &&
+        todoList.map((todo) => (
+          <li key={todo.id}>
+            <label>
+              <input type="checkbox" />
+              <span>{todo.todo}</span>
+            </label>
+            <button data-testid="modify-button">수정</button>
+            <button data-testid="delete-button">삭제</button>
+          </li>
+        ))}
     </>
   );
 }
