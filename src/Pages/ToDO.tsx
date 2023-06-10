@@ -94,7 +94,7 @@ export default function ToDO() {
       <h1 className="w-full text-grey-darkest text-left text-2xl">Todo List</h1>
       <div className="flex mt-4">
         <input
-          className="w-96 shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
+          className="w-96 shadow appearance-none border rounded  py-2 px-3 mr-4 text-grey-darker"
           placeholder="Add Todo"
           data-testid="new-todo-input"
           onChange={(e) => setTodoInput(e.target.value)}
