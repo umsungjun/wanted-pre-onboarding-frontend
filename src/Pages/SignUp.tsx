@@ -38,20 +38,25 @@ export default function SignUp() {
   };
 
   return (
-    <>
-      이메일 :
-      <input
-        data-testid="email-input"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <br />
-      비밀번호 :
-      <input
-        data-testid="password-input"
-        type="password"
-        onChange={(e) => setPassWord(e.target.value)}
-      />
-      <br />
+    <section className="flex gap-2 flex-col content-center justify-center rounded-l-md bg-white">
+      <div className="flex">
+        <span>이메일 :</span>
+        <input
+          data-testid="email-input"
+          placeholder="Enter your email"
+          className="block rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="flex">
+        <span>비밀번호 :</span>
+        <input
+          data-testid="password-input"
+          type="password"
+          className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
+          onChange={(e) => setPassWord(e.target.value)}
+        />
+      </div>
       <button
         data-testid="signup-button"
         disabled={btnDisable}
@@ -59,6 +64,6 @@ export default function SignUp() {
       >
         회원가입
       </button>
-    </>
+    </section>
   );
 }
