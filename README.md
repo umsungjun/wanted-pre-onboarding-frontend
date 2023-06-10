@@ -8,4 +8,6 @@ $ npm install
 $ npm start
 ```
 
-## [배포 링크(Vercel을 이용해서 배포하였습니다.)]('https://wanted-pre-onboarding-frontend-six-bay.vercel.app/')
+## 배포 링크(Vercel을 이용해서 배포하였습니다.)
+
+## https://wanted-pre-onboarding-frontend-six-bay.vercel.app/
